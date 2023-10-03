@@ -40,14 +40,36 @@
 
 // emitter.emit('MessageLogged',{id:1,url:'https://'})
 
-const Logger=require('./logger')
-const logger=new Logger();
-// listener
-logger.on('logging',(arg)=>{
-    console.log('Listener Called',arg)
-})
-logger.log('kausic');
+// const Logger=require('./logger')
+// const logger=new Logger();
+// // listener
+// logger.on('logging',(arg)=>{
+//     console.log('Listener Called',arg)
+// })
+// logger.log('kausic');
 
+
+// HTTP 
+
+const http =require('http')
+
+// this is not used in real world as it gets complicated dealing more routes. Instead we use Express.js which is built on top of Http Module in Node
+const server=http.createServer((req,res)=>{
+    if(req.url==='/'){
+        res.write('Hello World');
+        res.end();
+    }
+    if(req.url==='/api/courses'){
+        res.write(JSON.stringify([1,2,3,4,5]));
+        res.end();
+    }
+});
+// not going to respond to connection event to build a http service in real world.
+// server.on('connection',(socket)=>{
+// console.log('New Connection...');
+// });
+server.listen(3000);
+console.log('Listening on port 3000...');
 
 
 
