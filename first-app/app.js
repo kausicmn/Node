@@ -30,18 +30,23 @@
 // }))
 
 // Event
-const EventEmitter = require('events')
-const emitter= new EventEmitter();
+// const EventEmitter = require('events')
+// const emitter= new EventEmitter();
 
 // Register an listner
-emitter.on('MessageLogged',(arg)=>{
-    console.log('Listener Called',arg)
-})
+
 
 // Signaling a event has happend - Raise and event
 
 // emitter.emit('MessageLogged',{id:1,url:'https://'})
 
+const Logger=require('./logger')
+const logger=new Logger();
+// listener
+logger.on('logging',(arg)=>{
+    console.log('Listener Called',arg)
+})
+logger.log('kausic');
 
 
 
