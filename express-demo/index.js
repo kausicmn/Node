@@ -1,7 +1,37 @@
+const config=require('config')
 var express=require('express')
 const app=express();
 const Joi=require('joi');
+const helmet=require("helmet");
+const morgan=require("morgan")
+const logger=require('./logger')
+
+// console.log(process.env.NODE_ENV) // adding developemt, testing, staging, production machine tags environment
+// console.log(`App: ${app.get('env')}`);
+
 app.use(express.json());
+app.use(express.urlencoded({extended:true})); // middleware
+app.use(express.static('public'))
+app.use(helmet())
+
+// config based on different environemnt
+
+console.log('App Name:'+config.get('name'));
+console.log('Mail Server:'+config.get('mail.host'));
+
+
+if(app.get('env')==='development')
+{
+    app.use(morgan('tiny'))
+    console.log('Morgan enabled...')
+}
+
+app.use(logger);
+// app.use(function(req,res,next){
+//     console.log('Authenticating');
+//     next();
+// })
+
 const courses =[
     {id:1,name:'course1'},
     {id:2,name:'course2'},
@@ -44,8 +74,7 @@ app.post('/api/courses',(req,res)=>{
     const {error}=validatecourse(req.body);
     if(error)
     {
-        res.status(400).send(error.details[0].message);
-        return;
+        return res.status(400).send(error.details[0].message);
     }
     const course={
         id:courses.length+1,
@@ -57,13 +86,14 @@ app.post('/api/courses',(req,res)=>{
 
 app.put('/api/courses/:id',(req,res)=>{
 const course=courses.find(c=>c.id===parseInt(req.params.id));
-if(!course) res.status(404).send('The course with given ID was not found')
-
+if(!course) 
+{
+    return res.status(404).send('The course with given ID was not found')
+}
 const {error}=validatecourse(req.body);
 if(error)
 {
-    res.status(400).send(error.details[0].message);
-    return;
+    return res.status(400).send(error.details[0].message);
 }
 course.name=req.body.name
 res.send(course);
@@ -75,5 +105,19 @@ function validatecourse(course)
     });
     return schema.validate(course)
 }
+
+app.delete('/api/courses/:id',(req,res)=>{
+    const course=courses.find(c=>c.id===parseInt(req.params.id));
+    if(!course)
+    {
+        return res.status(404).send('course not found');
+    }
+    const idx=courses.indexOf(course);
+    courses.splice(idx,1);
+    res.send(course);
+
+})
+
+
 const port=process.env.PORT || 3000;
 app.listen(port,()=>console.log(`Listening on Port ${port}....`));
