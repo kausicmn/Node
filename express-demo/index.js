@@ -1,4 +1,6 @@
 const config=require('config')
+const startdebugger=require('debug')('app:startup')
+const dbdebugger=require('debug')('app:db')
 var express=require('express')
 const app=express();
 const Joi=require('joi');
@@ -16,16 +18,16 @@ app.use(helmet())
 
 // config based on different environemnt
 
-console.log('App Name:'+config.get('name'));
-console.log('Mail Server:'+config.get('mail.host'));
+// console.log('App Name:'+config.get('name'));
+// console.log('Mail Server:'+config.get('mail.host'));
 
 
 if(app.get('env')==='development')
 {
     app.use(morgan('tiny'))
-    console.log('Morgan enabled...')
+    startdebugger('Morgan enabled...')
+    dbdebugger('connected to db')
 }
-
 app.use(logger);
 // app.use(function(req,res,next){
 //     console.log('Authenticating');
