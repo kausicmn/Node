@@ -1,13 +1,14 @@
 console.log('Before');
-getuser(1,(user)=>{
-    console.log(user) // when the result is ready the function will be executed and result is displayed -- async using callback
-    getrepo(user.gitusername,(repo)=>{
-        console.log(repo)
-    })
-}); 
+getuser(1,displayuser); 
 console.log('After'); // 2 nd one has to wait until first one is executed. Synchrous program
 
-
+function displayuser(user){
+    console.log(user) 
+    getrepo(user.gitusername,displayrepo)
+}
+function displayrepo(repo){
+    console.log(repo)
+}
 
 function getuser(id,callback){
     setTimeout(()=>{
