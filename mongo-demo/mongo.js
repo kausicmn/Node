@@ -3,6 +3,7 @@ const mongoose=require('mongoose')
 mongoose.connect('mongodb://localhost/mongo-exercises').then(()=>console.log('Connected to MongoDB')).catch((err)=>console.error('Could not connect',err));
 
 const courseSchema = new mongoose.Schema({
+    _id:String,
     tags: [String],
     date:Date,
     name: String,
@@ -22,4 +23,40 @@ const course= await Course.find({isPublished:true}).or([{price:{$gte:15}},{name:
     console.log(course)
 }
 
-getCourses();
+async function updatecourse(id){
+    // try{
+    //     const course=await Course.findById(id);
+    //     console.log(course);
+    //     if(!course) return;
+    //     course.author='Kausic';
+    //  //    course.set({
+    //  //     author:'Kausic'
+    //  //    })
+    //  const result= await course.save();
+    //  console.log(result);
+    // }
+    // catch(err)
+    // {
+    //     console.error(err)
+    // }
+
+    // const course=await Course.updateOne({_id:id},{
+    //     $set:{
+    //         author:'Kausic',
+    //         isPublished:false
+    //     }
+    // })
+    // console.log(course)
+
+    const course=await Course.findByIdAndUpdate({_id:id},{
+        $set:{
+            author:'Kausic',
+            isPublished:false
+        }
+    },{new:true})
+    console.log(course)
+
+}
+updatecourse('5a68fdc3615eda645bc6bdec');
+
+// getCourses();
