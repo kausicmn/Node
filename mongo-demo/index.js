@@ -28,11 +28,39 @@ async function createCourse()
         const result= await course.save();
         console.log(result)
 }
+//conditional
+// eq
+// ne
+// gt
+// gte
+// lt
+// lte
+// in
+// nin
+
+
+// logical
+// or 
+// and
 
 async function getCourses()
 {
-    const courses=await Course.find({author:'Kausic',isPublished:true}).limit(10).sort({name:1}).select({name:1,tags:1});
-    console.log(courses);
+
+ // const courses=await Course.find({author:'Kausic',isPublished:true}).limit(10).sort({name:1}).select({name:1,tags:1});
+   // const courses=await Course.find({price:{$gte:10,$lte:20}}).limit(10).sort({name:1}).select({name:1,tags:1});
+    //const courses=await Course.find({price:{$in:[10,15,20]}}).limit(10).sort({name:1}).select({name:1,tags:1});
+
+    //const courses=await Course.find().or([{author:'Kausic'},{isPublished:true}]).limit(10).sort({name:1}).select({name:1,tags:1});
+
+   // /C$/i ends with C case insensitive
+   // /^C/ starts with C
+   // Contains K /.*K.*/i 
+   // const courses=await Course.find({author:/^K/,isPublished:true}).limit(10).sort({name:1}).select({name:1,tags:1});
+   // const courses=await Course.find({author:'Kausic',isPublished:true}).limit(10).sort({name:1}).count()
+   const pagenumber=2;
+   const pagesize=10;
+   const courses=await Course.find({author:'Kausic',isPublished:true}).skip((pagenumber-1)*pagesize).limit(pagesize).sort({name:1}).select({name:1,tags:1});
+   console.log(courses);
 }
 //createCourse();
 
