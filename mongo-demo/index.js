@@ -4,7 +4,7 @@ mongoose.connect('mongodb://localhost/playground').then(()=>console.log('Connect
 
 // string, number, Date, Buffer, Boolean, ObjectID, Array
 const courseSchema= new mongoose.Schema({
-    name: String,
+    name: {type:String,required:true},
     author: String,
     tags: [String],
     date:{
