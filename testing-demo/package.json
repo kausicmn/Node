@@ -1,0 +1,19 @@
+{
+  "name": "testing-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "db.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "compression": "^1.7.4"
+  },
+  "scripts": {
+    "test": "jest --watchAll",
+    "start":"node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
